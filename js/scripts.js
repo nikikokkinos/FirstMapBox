@@ -2,17 +2,19 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibmlraTEyc3RlcCIsImEiOiJjanZlNGFneWswMm0zNDRxc
 
 var map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/mapbox/streets-v11',
+  style: 'mapbox://styles/mapbox/dark-v9',
   center: [23.389893, 38.298559],
   zoom: 5.6,
   minZoom: 3,
 });
 
 map.on('load', function() {
-  var url = 'https://raw.githubusercontent.com/nikikokkinos/GR_Data/master/GR_Regions.geojson';
+
+  var urlRegions = 'https://raw.githubusercontent.com/nikikokkinos/GR_Data/master/GR_Regions.geojson';
+
   map.addSource('regions', {
     type: 'geojson',
-    data: url,
+    data: urlRegions,
   });
 
   map.addLayer({
@@ -26,9 +28,63 @@ map.on('load', function() {
   /*there are many options for styling - this is a simple style*/
 
   'paint': {
-    'fill-color': 'skyblue',
-    'fill-outline-color': 'white',
+    'fill-color': '#a2c6db',
+    'fill-outline-color': '#ffffff',
     'fill-opacity': 0.9
   }
 });
+
+  var urlDistricts = 'https://raw.githubusercontent.com/nikikokkinos/GR_Data/master/GR_Districts.geojson'
+
+  map.addSource('districts', {
+    type: 'geojson',
+    data: urlDistricts,
+  });
+
+  map.addLayer({
+    'id': 'districtsLayer',
+    'type': 'fill',    /*define the type of layer fill, line, point, fill-extrusion, background, raster, circle*/
+    'source': 'districts',
+    'layout': {
+      'visibility': 'visible'
+    },
+
+    /*there are many options for styling - this is a simple style*/
+
+    'paint': {
+      'fill-color': 'white',
+      'fill-outline-color': 'black',
+      'fill-opacity': 0.9
+    }
+  });
 });
+
+// var toggleableLayerIds = [ 'regionsLayer', 'districtsLayer' ];
+//
+// for (var i = 0; i < toggleableLayerIds.length; i++) {
+//   var id = toggleableLayerIds[i];
+//
+//   var link = document.createElement('a');
+//   link.href = '#';
+//   link.className = 'active';
+//   link.textContent = id;
+//
+//   link.onclick = function (e) {
+//   var clickedLayer = this.textContent;
+//   e.preventDefault();
+//   e.stopPropagation();
+//
+//   var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+//
+//   if (visibility === 'visible') {
+//   map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+//   this.className = '';
+//   } else {
+//   this.className = 'active';
+//   map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+//   }
+//   };
+//
+// var layers = document.getElementById('menu');
+// layers.appendChild(link);
+// }
