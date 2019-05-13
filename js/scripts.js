@@ -10,14 +10,14 @@ var map = new mapboxgl.Map({
 
 map.on('load', function() {
 
-  var urlRegions = 'https://raw.githubusercontent.com/nikikokkinos/GR_Data/master/GR_Regions.geojson';
+  var urlRegions = 'https://raw.githubusercontent.com/nikikokkinos/GR_Data/master/GR_RegionsSimplified.json';
 
   map.addSource('regions', {
     type: 'geojson',
     data: urlRegions,
   });
 
-  map.addLayer({
+  var regionsLayer = map.addLayer({
   'id': 'regionsLayer',
   'type': 'fill',    /*define the type of layer fill, line, point, fill-extrusion, background, raster, circle*/
   'source': 'regions',
@@ -34,14 +34,14 @@ map.on('load', function() {
   }
 });
 
-  var urlDistricts = 'https://raw.githubusercontent.com/nikikokkinos/GR_Data/master/GR_Districts.geojson'
+  var urlDistricts = 'https://raw.githubusercontent.com/nikikokkinos/GR_Data/master/GR_DistrictsSimplified.json'
 
   map.addSource('districts', {
     type: 'geojson',
     data: urlDistricts,
   });
 
-  map.addLayer({
+  var districtsLayer = map.addLayer({
     'id': 'districtsLayer',
     'type': 'fill',    /*define the type of layer fill, line, point, fill-extrusion, background, raster, circle*/
     'source': 'districts',
@@ -59,10 +59,34 @@ map.on('load', function() {
   });
 });
 
-// var toggleableLayerIds = [ 'regionsLayer', 'districtsLayer' ];
+// mapbox gl js navigation control
+var nav = new mapboxgl.NavigationControl();
+  map.addControl(nav, 'top-right');
+
+// mapbox geocoder
+map.addControl(new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken,
+  mapboxgl: mapboxgl,
+}));
+
+// var layers = [regionsLayer, districtsLayer];
 //
-// for (var i = 0; i < toggleableLayerIds.length; i++) {
-//   var id = toggleableLayerIds[i];
+// L.control.layers(layers).addTo(map);
+
+
+// var baselayers = {
+//   'Regions Layer': regionsLayer,
+//   'Districts Layer': districtsLayer,
+// };
+//
+// L.control.layers(baselayers).addTo(map);
+
+// var layers = [ 'regionsLayer', 'districtsLayer' ];
+
+// var toggleableLayers = [ 'regionsLayer', 'districtsLayer' ];
+//
+// for (var i = 0; i < toggleableLayers.length; i++) {
+//   var id = toggleableLayers[i];
 //
 //   var link = document.createElement('a');
 //   link.href = '#';
